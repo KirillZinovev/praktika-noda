@@ -1,0 +1,13 @@
+* {
+  font-family: sans-serif;
+}
+
+.klass {
+  background-color: aqua;
+  border: 1px solid black;
+}
+
+img {
+  width: 450px;
+  height: 300px;
+}
