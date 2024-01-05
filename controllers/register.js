@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const link = "https://kappa.lol/VMimi";
+const link = "https://kappa.lol/6t3c9";
 exports.form = (req, res) => {
   res.render("registerForm", { title: "Register",link: link  });
 };
