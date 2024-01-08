@@ -6,16 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/post.css" />
   </head>
   <body>
     <div class="container">
       <%- include ('./partials/menu') %>
-      <h1><%= title %></h1>
+      <h1 class="text-white"><%= title %></h1>
       <%#- include ('./partials/messages') %>
-      <p>Заполните форму ниже чтобы изменить пост</p>
+      <p class="text-white">Заполните форму ниже чтобы изменить пост</p>
       <form method="post" action="/update/<%= entry.id %>?_method=PUT>">
         <div class="mb-3">
-          <label for="z" class="form-label">Title</label>
+          <label for="z" class="form-label text-white">Title</label>
           <input
             type="text"
             class="form-control"
@@ -27,7 +28,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="s" class="form-label">Текст заметки</label>
+          <label for="s" class="form-label text-white">Текст заметки</label>
           <textarea class="form-control" name="entry[content]" id="s" rows="3">
 <%= entry.content %></textarea
           >

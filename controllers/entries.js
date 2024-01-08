@@ -31,6 +31,7 @@ exports.submit = (req, res, next) => {
   }
 };
 
+
 exports.delete = (req, res, next) => {
   const entryId = req.params.id;
 
