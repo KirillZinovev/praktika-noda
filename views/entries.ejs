@@ -16,21 +16,22 @@
     <% entries.forEach((entry)=>{ %>
         <div class="card entry" style="width: 66rem;">
             <div class="card-body ">
+                <% if (locals.user && ( locals.user.name === entry.username)) { %>
                 <h4 class="card-title">Заголовок :  <%= entry.title %></h4>
                 <p class="card-text">
+                    <a href="/update/<%= entry.id %>" class="btn-update position-absolute bottom-0 end-0 p-1">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                <button class="btn-delete position-absolute bottom-0 start-50 translate-middle-x w-25" data-id="<%=entry.id%>">
+                    <i class="fa-solid fa-trash-can-arrow-up " data-id="<%=entry.id%>"></i>
+                </button>
+                <% } %>
                     <h6>Сообщение :    <%= entry.content %> </h6>   
                 </p>
                 </br>
                 <h6>Запостил :   <%= entry.username %> </h6>                
                 <% if(locals.user){ %>
-                <a href="/update/<%= entry.id %>" class="btn-update position-absolute bottom-0 end-0 p-1">
-                    <i class="fa-regular fa-pen-to-square"></i>
-                </a>
-            <button class="btn-delete position-absolute bottom-0 start-50 translate-middle-x w-25" data-id="<%=entry.id%>">
-                <i class="fa-solid fa-trash-can-arrow-up " data-id="<%=entry.id%>"></i>
-            </button>
                 <%}%>
-                
             </div>
         </div> 
         </br>
