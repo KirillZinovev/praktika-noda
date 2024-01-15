@@ -14,7 +14,7 @@ const port = "3000";
 
 const filePath = path.join(__dirname, "tmp", "1.txt");
 
-
+const message = require("./middleware/message");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -86,3 +86,12 @@ if (app.get("env") != "development") {
     console.log(app.get("env"), err.status, err.message);
   });
 }
+
+module.exports = function (req, res, next) {
+  if (!req.session.userEmail) return next();
+  User.findByEmail(req.session.userEmail, (error, userData) => {
+    if (error) return next(error);
+    if (userData) req.user = res.locals.user = userData;
+    next();
+  });
+};

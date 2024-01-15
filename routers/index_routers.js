@@ -3,11 +3,19 @@ const router = express.Router();
 const register = require("../controllers/register");
 const login = require("../controllers/login");
 const entries = require("../controllers/entries");
+const validate = require("../middleware/validate");
 
 router.get("/", entries.list);
 
 router.get("/post", entries.form);
 router.post("/post", entries.submit);
+router.post(
+  "/post",
+  validate.required("entry[title]"),
+  validate.required("entry[content]"),
+  validate.lenghtAbove("entry[content]"),
+  entries.submit
+);
 
 router.get("/update/:id", entries.updateForm);
 router.post("/update/:id", entries.updateSubmit);
