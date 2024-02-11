@@ -1,75 +1,103 @@
+const logger = require("../logger/index");
 const Entry = require("../models/entry");
+const multer = require("multer");
+const link = "https://kappa.lol/u_3C1";
+const messanger = "https://kappa.lol/u_3C1";
+const path = require("path");
+const express = require("express");
+const router = express.Router();
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+const upload = multer({ storage: storage });
 
-// Отображение списка записей
-exports.list = (req, res, next) => {
-  Entry.selectAll((err, entries) => {
+exports.delete = (req, res, next) => {
+  const postId = req.params.id;
+  Entry.delete(postId, (err) => {
     if (err) return next(err);
-
-    const userData = req.user; // Получение данных пользователя из запроса
-    res.render("entries", { title: "List", entries: entries, user: userData });
+    res.redirect("/");
   });
 };
 
-// Отображение формы для создания записи
-exports.form = (req, res) => {
+exports.list = (req, res, next) => {
+  Entry.selectAll((err, entries) => {
+    if (err) return next(err);
+    res.render("entries", { title: "Entries", entries: entries, link: link });
+    logger.info("Зашли на страницу");
+  });
+};
+
+exports.form = (req, res, next) => {
   res.render("post", { title: "Post" });
 };
 
-// Обработка отправки новой записи
 exports.submit = (req, res, next) => {
   try {
-    const username = req.user ? req.user.name : null; // Получение имени пользователя из запроса
-    const data = req.body.entry; // Получение данных новой записи из тела запроса
-
+    const username = req.user ? req.user.name : null;
+    const data = req.body.entry;
+    // if (!data.content) {
+    //   throw new Error("Content is required");
+    // }
+    const imagePath = req.file ? req.file.path : null;
     const entry = {
       username: username,
       title: data.title,
       content: data.content,
+      imagePath: imagePath,
     };
-
-    Entry.create(entry); // Создание новой записи
-    res.redirect("/"); // Перенаправление на главную страницу
+    Entry.create(entry);
+    res.redirect("/");
+    // console.log(entry.imagePath);
   } catch (err) {
     return next(err);
   }
 };
 
-// Удаление записи
-exports.delete = (req, res, next) => {
-  const entryId = req.params.id; // Получение идентификатора записи из параметров запроса
-
-  Entry.delete(entryId, (err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/"); // Перенаправление на главную страницу
-  });
-};
-
-// Отображение формы для обновления записи
 exports.updateForm = (req, res) => {
-  const entryId = req.params.id; // Получение идентификатора записи из параметров запроса
-  Entry.getEntryById(entryId, (err, entry) => {
+  const id = req.params.id;
+  Entry.getEntryId(id, (err, entry) => {
     if (err) {
-      return res.redirect("/"); // Перенаправление на главную страницу в случае ошибки
+      return res.redirect("/");
     }
-    res.render("update", { title: "Update", entry: entry }); // Отображение формы обновления с данными записи
+    res.render("edit", {
+      title: "Форма изменения поста",
+      entry: entry,
+      link: link,
+      messanger: messanger,
+    });
   });
 };
 
-// Обработка отправки обновленных данных записи
 exports.updateSubmit = (req, res, next) => {
-  const entryId = req.params.id; // Получение идентификатора записи из параметров запроса
-  const newData = {
-    title: req.body.entry.title, // Получение обновленного заголовка из тела запроса
-    content: req.body.entry.content, // Получение обновленного содержимого из тела запроса
+  const id = req.params.id;
+  if (!req.body.entry) {
+    return next(new Error("Entry data is missing"));
+  }
+  const updateInf = {
+    title: req.body.entry.title,
+    content: req.body.entry.content,
+    imagePath: req.file ? req.file.path : req.body.entry.imagePath,
   };
-
-  Entry.update(entryId, newData, (err) => {
+  Entry.getEntryId(id, (err, entry) => {
     if (err) {
       return next(err);
     }
-    res.redirect("/"); // Перенаправление на главную страницу после успешного обновления
+    if (!updateInf.imagePath) {
+      updateInf.imagePath = entry.imagePath;
+    }
+    Entry.update(id, updateInf, (err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
   });
 };
-

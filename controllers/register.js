@@ -1,25 +1,28 @@
 const User = require("../models/user");
+// const {emailValidation, passValidation}  = require("../middleware/validation");
+
 const link = "https://kappa.lol/6t3c9";
+const messanger = "https://kappa.lol/6t3c9";
+
 exports.form = (req, res) => {
-  res.render("registerForm", { title: "Register",link: link  });
+  res.render("registerForm", { errors: {}, link: link, messanger: messanger });
 };
 
-
 exports.submit = (req, res, next) => {
-  User.findByEmail(req.body.email, (error, user) => {
+  const { name, email, password } = req.body;
+
+  User.findByEmail(email, (error, user) => {
     if (error) return next(error);
     if (user) {
-      console.log("Такой пользователь в базе уже существует");
+      console.log("Такой пользователь в базе уже существует.");
       res.redirect("/");
     } else {
       User.create(req.body, (err) => {
         if (err) return next(err);
-        req.session.userEmail = req.body.email;
-        req.session.userName = req.body.name;
+        req.session.userEmail = email;
+        req.session.userName = name;
         res.redirect("/");
       });
     }
   });
 };
-
-

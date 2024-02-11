@@ -2,36 +2,40 @@ const express = require("express");
 const favicon = require("express-favicon");
 const fs = require("fs");
 const path = require("path");
-const { nextTick } = require("process");
 const ejs = require("ejs");
+const mongoose = require("mongoose");
+const adminRoutes = require("./controllers/admin");
 const session = require("express-session");
-const methodOverride = require("method-override");
-
-const userSession = require("./middleware/user_session");
-const app = express();
-const myRoutes = require("./routers/index_routers");
-const port = "3000";
-
-const filePath = path.join(__dirname, "tmp", "1.txt");
-
 const message = require("./middleware/message");
+const messanger = "https://kappa.lol/iSONv";
+const link = "https://kappa.lol/VMimi";
+const bodyParser = require("body-parser");
+// const morgan = require("morgan");
+const winston = require("winston");
+const app = express();
+app.use(bodyParser.json());
+
+// Parse incoming requests with URL-encoded payloads
+app.use(bodyParser.urlencoded({ extended: true }));
+const myRoutes = require("./routers/index_routers");
+const userSession = require("./middleware/user_session");
+require("dotenv").config;
+const port = process.env.PORT || "3000";
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
-console.log(app.get("env"));
-
+const flash = require('connect-flash');
+app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "css")));
 app.use(express.static(path.join(__dirname, "views")));
-
-app.use(methodOverride("_method"));
-
+app.use("/uploads", express.static("uploads"));
+// app.use(morgan("tiny"));
 app.use(
   session({
-    secret: "aboba",
+    secret: "process.env.SECRET",
     resave: false,
     saveUninitialized: true,
   })
@@ -47,51 +51,21 @@ app.use(
   )
 );
 
-app.use(favicon(__dirname + "/public/favicon.ico"));
-
+app.use(favicon(__dirname + "/public/img/logo.png"));
 app.use(userSession);
+app.use(message);
 app.use(myRoutes);
 
-app.listen(port, () => {
-  console.log(`listen on port ${port}`);
+app.get("/", (req, res) => {
+  res.render("registerForm.ejs", { link: link, messanger: messanger });
 });
 
-app.get("env") == "production";
+app.use(adminRoutes);
 
-console.log(app.get("env"));
-
-if (app.get("env") == "production") {
-  app.use((req, res, err) => {
-    res.status(err.status);
-    res.sendFile(err.message);
-  });
-}
-
-//ERROR HANDLER
-app.use((req, res, next) => {
-  const err = new Error("Could't get path");
-  err.status = 404;
-  next(err);
+app.listen(port, () => {
+  console.log(`Сервер запущен на порту ` + port);
 });
 
 if (app.get("env") != "development") {
-  app.use(function (err, req, res, next) {
-    console.log(err.status, err.message);
-    res.status = 404;
-    link = "https://centralsib.com/media/gallery/kukushka.jpg";
-    res.render("error.ejs", { err, link });
-  });
 } else {
-  app.use(function (err, req, res, next) {
-    console.log(app.get("env"), err.status, err.message);
-  });
 }
-
-module.exports = function (req, res, next) {
-  if (!req.session.userEmail) return next();
-  User.findByEmail(req.session.userEmail, (error, userData) => {
-    if (error) return next(error);
-    if (userData) req.user = res.locals.user = userData;
-    next();
-  });
-};
