@@ -17,6 +17,7 @@ exports.submit = (req, res, next) => {
       link: link,
       messanger: messanger,
     });
+    logger.error("Неверный формат email");
     return;
   }
 
@@ -28,6 +29,7 @@ exports.submit = (req, res, next) => {
         link: link,
         messanger: messanger,
       });
+      logger.error("Имя или пароль неверный");
       return;
     }
 

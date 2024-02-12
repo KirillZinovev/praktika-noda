@@ -13,6 +13,7 @@ const bodyParser = require("body-parser");
 // const morgan = require("morgan");
 const winston = require("winston");
 const app = express();
+const logger = require("./logger/index");
 app.use(bodyParser.json());
 
 // Parse incoming requests with URL-encoded payloads
@@ -24,7 +25,8 @@ const port = process.env.PORT || "3000";
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-const flash = require('connect-flash');
+const flash = require("connect-flash");
+const { log } = require("console");
 app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -63,6 +65,7 @@ app.get("/", (req, res) => {
 app.use(adminRoutes);
 
 app.listen(port, () => {
+  logger.info(`Сервер запущен на порту ` + port);
   console.log(`Сервер запущен на порту ` + port);
 });
 

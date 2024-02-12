@@ -55,7 +55,7 @@ exports.submit = (req, res, next) => {
     };
     Entry.create(entry);
     res.redirect("/");
-    // console.log(entry.imagePath);
+    // logger(entry.imagePath);
   } catch (err) {
     return next(err);
   }

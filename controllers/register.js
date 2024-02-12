@@ -3,6 +3,7 @@ const User = require("../models/user");
 
 const link = "https://kappa.lol/6t3c9";
 const messanger = "https://kappa.lol/6t3c9";
+const logger = require("../logger/index");
 
 exports.form = (req, res) => {
   res.render("registerForm", { errors: {}, link: link, messanger: messanger });
@@ -14,7 +15,7 @@ exports.submit = (req, res, next) => {
   User.findByEmail(email, (error, user) => {
     if (error) return next(error);
     if (user) {
-      console.log("Такой пользователь в базе уже существует.");
+      logger.error("Такой пользователь в базе уже существует.");
       res.redirect("/");
     } else {
       User.create(req.body, (err) => {

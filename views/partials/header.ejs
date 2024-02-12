@@ -27,13 +27,26 @@
             >Главная</a
           >
         </li>
+
         <li class="nav-item">
-          <a class="nav-link text-white active pe-3 fs-5" href="login">Войти</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white active pe-3 fs-5" href="register"
-            >Регистрация</a
-          >
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a
+                href="#"
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                ><i class="fa fa-user-o" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-menu" aria-labelledy="navbarDropdown">
+                <li>
+                  <a href="/register" class="dropdown-item">Регистрация</a>
+                </li>
+                <li>
+                  <a href="/login" class="dropdown-item">Вход</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </li>
       </ul>
       <form class="d-flex" role="search"></form>

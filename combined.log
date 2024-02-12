@@ -133,3 +133,73 @@
   level: 'info',
   timestamp: '2024-02-11T18:46:18.110Z'
 }
+{
+  message: 'Зашли на страницу',
+  level: 'info',
+  timestamp: '2024-02-12T06:08:26.931Z'
+}
+{
+  message: 'Зашли на страницу',
+  level: 'info',
+  timestamp: '2024-02-12T06:08:27.064Z'
+}
+{
+  message: 'Зашли на страницу',
+  level: 'info',
+  timestamp: '2024-02-12T06:08:27.236Z'
+}
+{
+  message: 'Зашли на страницу',
+  level: 'info',
+  timestamp: '2024-02-12T06:13:13.961Z'
+}
+{
+  message: 'Зашли на страницу',
+  level: 'info',
+  timestamp: '2024-02-12T06:13:14.028Z'
+}
+{
+  message: 'Зашли на страницу',
+  level: 'info',
+  timestamp: '2024-02-12T06:13:14.234Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:03:07.839Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:03:44.952Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:04:00.477Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:07:38.084Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:08:07.447Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:08:30.959Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:11:27.601Z'
+}
+{
+  message: 'Сервер запущен на порту 3000',
+  level: 'info',
+  timestamp: '2024-02-12T07:11:54.957Z'
+}
